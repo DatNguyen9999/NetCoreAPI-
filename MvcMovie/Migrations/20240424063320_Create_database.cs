@@ -5,13 +5,13 @@
 namespace MvcMovie.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_table_Person : Migration
+    public partial class Create_database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Persons",
+                name: "Person",
                 columns: table => new
                 {
                     PersonId = table.Column<string>(type: "TEXT", nullable: false),
@@ -20,7 +20,7 @@ namespace MvcMovie.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Persons", x => x.PersonId);
+                    table.PrimaryKey("PK_Person", x => x.PersonId);
                 });
         }
 
@@ -28,7 +28,7 @@ namespace MvcMovie.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Persons");
+                name: "Person");
         }
     }
 }
