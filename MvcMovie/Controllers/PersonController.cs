@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
 using NetMVC.Models.Process;
+using OfficeOpenXml;
 
 namespace MvcMovie.Controllers
 {
@@ -16,7 +17,7 @@ namespace MvcMovie.Controllers
     public ExcelProcess _excelProcess = new ExcelProcess();
     public async Task<IActionResult> Index()
     {
-        var model = await _context.Person.ToListAsync();
+        var model =  _context.Person.ToListAsync();
         return View(model);
 
     }
@@ -166,6 +167,21 @@ namespace MvcMovie.Controllers
             } 
         }
     return View();
+  }
+  public ActionResult Download()
+  {
+    var fileName = "YourFileName" + ".xlsx";
+    using(ExcelPackage excelPackage = new ExcelPackage())
+    {
+        ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+        worksheet.Cells["A1"].Value = "PersonId";
+        worksheet.Cells["B1"].Value = "FullName";
+        worksheet.Cells["C1"].Value = "Address";
+         var personList = _context.Person.ToList();
+         worksheet.Cells["A2"].LoadFromCollection(personList);
+         var steam = new MemoryStream(excelPackage.GetAsByteArray());
+         return File(steam, "application/vn.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
   }
   private bool PersonExists(string id)
   {
