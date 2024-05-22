@@ -1,12 +1,53 @@
-<h1>Du lieu tu Controller gui ve la: @ViewBag.infoEmployee</h1>
-<form asp-action="Index">
-    <label>Nhap MaNV</label>
-    <input type="text" name="Id">
-    <label>Nhap ho ten: </label>
-    <input type="text" name="FullName">
-    <label>Nhap tuoi: </label>
-    <input type="text" name="Age">
-    <label>Nhap luong: </label>
-    <input type="text" name="Luong">
-    <input type="submit" value="Gui du lieu">
-</form>
+@model IEnumerable<MvcMovie.Models.Employee>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Luong)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Luong)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page}),
+ new X.PagedList.Mvc.Core.PagedListRenderOptions { LiElementClasses = new string[] {"page-item"}, 
+ PageClasses = new string[] { "page-link" }})
+

@@ -11,6 +11,6 @@ namespace MvcMovie.Data
 
         public DbSet<HeThongPhanPhoi> HeThongPhanPhoi { get; set; }
 
-        public DbSet<HeThongPhanPhoi> Employee { get; set; }
+        public DbSet<Employee> Employee { get; set; }
     }
 }

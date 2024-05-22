@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
+using NetMVC.Models.Process;
+using X.PagedList;
 
 namespace MvcMovie.Controllers
 {
     public class HeThongPhanPhoiController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private ExcelProcess _excelProcess = new ExcelProcess();
 
         public HeThongPhanPhoiController(ApplicationDbContext context)
         {
@@ -20,9 +23,10 @@ namespace MvcMovie.Controllers
         }
 
         // GET: HeThongPhanPhoi
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.HeThongPhanPhoi.ToListAsync());
+            var model =  _context.HeThongPhanPhoi.ToList().ToPagedList(page ?? 1, 5);
+            return View(model);
         }
 
         // GET: HeThongPhanPhoi/Details/5

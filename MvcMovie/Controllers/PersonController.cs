@@ -1,23 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
 using NetMVC.Models.Process;
 using OfficeOpenXml;
+using X.PagedList;
 
 namespace MvcMovie.Controllers
 {
     public class PersonController : Controller
 {
     private readonly ApplicationDbContext _context;
+
+    private ExcelProcess _excelProcess = new ExcelProcess();
     public PersonController(ApplicationDbContext context)
     {
         _context = context;
     }
-    public ExcelProcess _excelProcess = new ExcelProcess();
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? page, int? PageSize)
     {
-        var model =  _context.Person.ToListAsync();
+        ViewBag.PageSize = new List<SelectListItem>()
+        {
+            new SelectListItem(){Value = "3", Text = "3"},
+            new SelectListItem(){Value = "5", Text = "5"},
+            new SelectListItem(){Value = "10", Text = "10"},
+            new SelectListItem(){Value = "15", Text = "15"},
+            new SelectListItem(){Value = "25", Text = "25"},
+            new SelectListItem(){Value = "50", Text = "50"},
+        };
+        int pagesize = (PageSize ?? 3);
+        ViewBag.psize = pagesize;
+        var model =  _context.Person.ToList().ToPagedList(page ?? 1, pagesize);
         return View(model);
 
     }
